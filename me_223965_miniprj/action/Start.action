@@ -1,0 +1,8 @@
+#goal
+bool start_driving
+---
+#result
+string final_state
+---
+#feedback
+string current_state

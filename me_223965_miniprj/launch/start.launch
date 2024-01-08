@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="me_223965_miniprj" type="follow_wall_as.py" name="follow_wall_as" output="screen">
+    </node>
+</launch>
