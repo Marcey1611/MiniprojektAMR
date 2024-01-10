@@ -2,6 +2,7 @@
 
 #from logging import shutdown
 #from math import inf
+from math import inf
 import rospy
 import actionlib
 from me_223965_miniprj.msg import StartAction, StartGoal, StartFeedback, StartResult
@@ -46,10 +47,22 @@ def callback(goal):
                 rospy.loginfo("step2")
                 twist.linear.x=0.05
                 feedback.current_state="following the wall"
-                if round(laserData.ranges[265],3)<=round(laserData.ranges[275],3):
-                    twist.angular.z=-0.2
-                if round(laserData.ranges[265],3)>=round(laserData.ranges[275],3):
-                    twist.angular.z=0.2
+                #if laserData.ranges[260] != 0.0 and laserData.ranges[260] != inf and laserData.ranges[280] != 0.0 and laserData.ranges[280] != inf:
+                if laserData.ranges[280]<0.5:
+                    if (round(laserData.ranges[260],3)<=round(laserData.ranges[280],3)):
+                        twist.angular.z=-0.2
+                    elif round(laserData.ranges[260],3)>=round(laserData.ranges[280],3):
+                        twist.angular.z=0.2
+                    else:
+                        twist.angular.z=0
+                elif laserData.ranges[280]>=0.5:
+                    step=step+1
+                    twist.angular.z=0
+                    twist.linear.x=0
+            elif step==3:
+                twist.linear.x=0.05
+                twist.angular.z=-0.1
+
             pubTwist.publish(twist)
             action_server.publish_feedback(feedback)
             r.sleep()                   
